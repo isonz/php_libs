@@ -43,15 +43,18 @@ if ($dir_name !== '') {
 }
 
 //根据path参数，设置各路径和URL
-if (empty($_GET['path'])) {
+$active_path = isset($_GET['path']) ? $_GET['path'] : '';
+if(!$active_path) $active_path = isset($_SESSION['active_path']) ? $_SESSION['active_path'] : '';
+$_SESSION['active_path'] = $active_path;
+if (!$active_path) {
 	$current_path = realpath($root_path) . '/';
 	$current_url = $root_url;
 	$current_dir_path = '';
 	$moveup_dir_path = '';
 } else {
-	$current_path = realpath($root_path) . '/' . $_GET['path'];
-	$current_url = $root_url . $_GET['path'];
-	$current_dir_path = $_GET['path'];
+	$current_path = realpath($root_path) . '/' . $active_path;
+	$current_url = $root_url . $active_path;
+	$current_dir_path = $active_path;
 	$moveup_dir_path = preg_replace('/(.*?)[^\/]+\/$/', '$1', $current_dir_path);
 }
 echo realpath($root_path);
